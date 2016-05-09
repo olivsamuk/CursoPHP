@@ -1,0 +1,9 @@
+body {margin:0; padding:0;}
+#margem {width:80%; margin:auto;}
+#menu {width:30%; float:left; background-color:#ccc; padding: 5px 0 10px 15px;}
+#main {width:65%; float:right; background-color: #ddd}
+#main p {text-align: justify;}
+#container {float:left;}
+#footer {float:left; width:100%;}
+#header, #footer {text-align: center;}
+#header h1 { font-color:#ccc; }
