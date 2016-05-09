@@ -15,7 +15,7 @@
  		$sqlUpdate = "UPDATE posts SET titulo = '{$_POST['titulo']}', 
  		conteudo = '{$_POST['conteudo']}', atualizado_em = '{$data}' 
  		WHERE id = $id";
- 		
+
  		print_r($sqlUpdate);
  		mysql_query($sqlUpdate) or die(mysql_error());
  		echo "Post editado com sucesso";
@@ -27,7 +27,10 @@
 
  <form method="post" action="edit.php?id=<?php echo $id; ?>">
  	<label>Titulo:</label><br/>
- 	<input name="titulo" type="text" value="<?php echo $post['titulo']; ?>" /><br/>
+
+ 	<input name="titulo" type="text"
+ 	value="<?php echo $post['titulo']; ?>" /><br/>
+ 	
  	<label>Conteudo:</label><br />
  	<textarea name="conteudo"><?php echo $post['conteudo']; ?></textarea><br />
  	<input type="hidden" name="usuario_id" value="1" />

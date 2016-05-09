@@ -27,5 +27,5 @@
  	<input type="submit" value="Salvar" />
 
  </form>
-
- 
+<br />
+ <a href="index.php"><< Voltar</a>

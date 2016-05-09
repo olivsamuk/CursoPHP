@@ -17,4 +17,4 @@ if (isset($_GET['id'])) {
 <b>Data de Criação</b><br />
 <?php echo $post['criado_em']; ?><br />
 
-<a href="index.php"><< Voltar</a>
+<a href="index.php"><< Voltar</a> | <a href="edit.php?id=<?php echo $id; ?>"> Editar</a>
