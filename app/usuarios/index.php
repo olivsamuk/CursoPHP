@@ -30,3 +30,6 @@
 <a href="new.php">[+] Novo Usuário</a>
 
 
+<?php 
+	echo md5("Samuel");
+ ?>
