@@ -1,4 +1,3 @@
-
 <?php 
 	include("layout/header.php");
 	include("../../config.php");
@@ -28,8 +27,3 @@
 </table>	
 <br /><br />
 <a href="new.php">[+] Novo Usuário</a>
-
-
-<?php 
-	echo md5("Samuel");
- ?>

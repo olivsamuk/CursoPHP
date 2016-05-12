@@ -11,8 +11,6 @@
  		mysql_query($sql) or die(mysql_error());
  		echo "Usuario salvo com sucesso";
  		echo "<a href='index.php'><< Voltar</a>";
- 	}else{
- 		echo "Post vazio";
  	}
   ?>
 
