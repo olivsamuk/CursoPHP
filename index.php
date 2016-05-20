@@ -1,77 +1,187 @@
-
 <?php 
-include("config.php");
- ?>
+	include("layout_home/header.php");
+	include("config.php");
+	$imagensdopost = mysql_query("SELECT * FROM posts ORDER BY id DESC LIMIT 3 OFFSET 1");
+	$primeiroPost = mysql_fetch_assoc(mysql_query("SELECT * from posts order by id desc limit 1")); 
 
+?>
 
- <!DOCTYPE html>
-<html>
-<head>
+<style type="text/css">
+	.carousel-inner{
+  width:100%;
+  max-height: 320px !important;
+}
+
+.carousel-caption {
+    right: 20%;
+    left: 20%;
+    top: 40%;
+    padding-bottom: 30px;
+}
+
+.carousel-caption a {
+	color:#fff;
+	font-weight: bold;
+}
+
+</style>
+		<div class="contanier">
+			<div class="row">
+	       		<div class="col-md-8 col-lg-8" style="background-color:#efefef;">  
+					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+					  <!-- Indicators -->
+					  <ol class="carousel-indicators">
+					    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+					    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+					    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+					    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+					  </ol>
+
+					  <!-- primeiro post -->
+					  <div class="carousel-inner" role="listbox">
+					    <div class="item active">
+					      <img style="width:100%" src="app/posts/<?php echo $primeiroPost['imagem']; ?>" alt="<?php echo $primeiroPost['titulo']; ?>">
+					      <div class="carousel-caption">
+					        <a href="show.php?id=<?php echo $primeiroPost['id']; ?>"><?php echo $primeiroPost['titulo']; ?></a>
+					      </div>
+					    </div>
+					  <!-- fecha primeiro post -->
+
+					  	<!-- Demais -->
+					  	<?php 
+					  		while ($imagem = mysql_fetch_array($imagensdopost)) {
+					  	 ?>
+						    <div class="item">
+						      <img style="width:100%" src="app/posts/<?php echo $imagem['imagem']; ?>" alt="<?php echo $imagem['titulo']; ?>">
+						      <div class="carousel-caption">
+						        <a href="show.php?id=<?php echo $imagem['id']; ?>"><?php echo $imagem['titulo']; ?></a>
+						      </div>
+						    </div>
+						<?php } ?>
+					    <!-- Fecha demais -->
+
+					  </div>
+					  
+
+					  <!-- Controls -->
+					  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					</div>
+	       			<div class="divisor" style="margin-bottom:20px;"><hr></div>
+	       	
+					<?php 
+	            	// Paginação
+	            	$numreg = 6;
+	            	if (!isset($pg)) {
+	            		$pg = 0;
+	            	}
+	            	$inicial = @$_GET['pg'] * $numreg; 
+	            	$conta_posts = mysql_query("SELECT * FROM posts");
+	            	$quantreg = mysql_num_rows($conta_posts);	            	
+				 	$contador = 1;
+				 	$posts = mysql_query("SELECT * FROM posts ORDER BY id DESC LIMIT $inicial, $numreg");
+				 	while ($post = mysql_fetch_array($posts)) {
+				 	$resultado = $contador%2;	
+				 		?>
+				 			
+						<?php if (!$resultado == 0){ ?>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									<a class="painel" href="show.php?id=<?php echo $post['id']; ?>">
+										<div class="panel panel-default">
+											
+											<div class="panel-heading" style="font-size:"><?php echo $post['titulo'] . $result; ?></div>
+											
+											<?php 
+												$strip = strip_tags($post['conteudo']);
+												$text = substr($strip,0,176); 
+											?>
+
+											<div class="panel-body">
+											<?php if(!$post['imagem'] == ""){ ?>
+												<img class="img-responsive" src="app/posts/<?php echo $post['imagem']; ?>" alt="">
+											<? } ?>
+											</div>
+											<div class="panel-body"><?php echo wordwrap($text, 18, "<br\> \n", true)."..."; ?></div>
+										
+											<div class="panel-footer text-center hidden-xs hidden-md"><?php echo " Publicado: ".$post['criado_em'];
+											if ($post['atualizado_em']!= "0000-00-00") {
+												echo " > > Atualizado: ".$post['atualizado_em'];
+											}
+											 ?></div>
+											<div class="panel-footer text-center visible-xs visible-md"><?php echo " Publicado >>> ".$post['criado_em'];
+											if ($post['atualizado_em']!= "0000-00-00") {
+												echo "<br/>Atualizado >>> ".$post['atualizado_em'];
+											}
+											 ?></div>
+											
+										</div>
+									</a>
+								</div> 	
+							
+						<?php }else{ ?>
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<a class="painel" href="show.php?id=<?php echo $post['id']; ?>">
+									<div class="panel panel-default">
+										
+										<div class="panel-heading" style="font-size:"><?php echo $post['titulo'] . $result; ?></div>
+										
+										<?php 
+											$strip = strip_tags($post['conteudo']);
+											$text = substr($strip,0,176); 
+										?>
+
+										<div class="panel-body">
+										<?php if(!$post['imagem'] == ""){ ?>
+											<img class="img-responsive" src="app/posts/<?php echo $post['imagem']; ?>" alt="">
+										<? } ?>
+										</div>
+										<div class="panel-body"><?php echo wordwrap($text, 18, "<br\> \n", true)."..."; ?></div>
+									
+										<div class="panel-footer text-center hidden-xs hidden-md"><?php echo " Publicado: ".$post['criado_em'];
+										if ($post['atualizado_em']!= "0000-00-00") {
+											echo " > > Atualizado: ".$post['atualizado_em'];
+										}
+										 ?></div>
+										<div class="panel-footer text-center visible-xs visible-md"><?php echo " Publicado >>> ".$post['criado_em'];
+										if ($post['atualizado_em']!= "0000-00-00") {
+											echo "<br/>Atualizado >>> ".$post['atualizado_em'];
+										}
+										 ?></div>
+										
+									</div>
+								</a>
+							</div> 
+						</div>
+						
+						<?php } ?>
+	             		
+	          		<?php $contador++; } ?>
+	          		</div>
+	          		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+	          			<h3>Ultimos Posts</h3>
+	          			<?php include("menu_direito.php"); ?>
+	          		</div>
+	          	</div> <!-- /row -->
+	          	<div class='row'>
+	          		<div class='col-xs-8 col-sm-8 col-md-8 col-lg-8' style='background-color:#efefef; text-align:center;'>
+	          			<?php include("paginacao.php"); ?>
+	          		</div>
+	          	</div>
+	        </div>
+	          		
+
+		
+		
+
+		
+<?php 
+
+include("layout_home/footer.php"); ?>
 	
-	<meta charset=utf-8>
-	<meta name=description content="">
-	<meta name=viewport content="width=device-width, initial-scale=1">
-
-
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>Projeto PHP</title>
-</head>
-<body>
-<div id="margem">
-		<div id="header"><h1>Curso de PHP</h1></div>
-		<div id="container">
-			<div id="menu">
-				<ul>
-				    <li>Link 1</li>
-				    <li>Link 2</li>
-				    <li>Link 3</li>
-				    <li>Link 4</li>
-				</ul>
-				<form>
-					Texto:<br/>
-					<input type="text" /><br />
-					Combo box:<br />
-					<select>
-						<option>Opção 1</option>
-						<option>Opção 2</option>
-						<option>Opção 3</option>
-						<option>Opção 4</option>
-						<option>Opção 5</option>
-					</select>
-					<br />
-					Radio Button:<br />
-					<input type="radio" name="sexo" value="1" /> Masculino<br/>
-  				<input type="radio" name="sexo" value="0" /> Feminino<br/>
-  				
-  				Checkbox: <br />
-
-  				<input type="checkbox" name="y[]" checked="true" /> Melão <br />
-  				<input type="checkbox" name="y[]" /> Melancia <br />
-  				<input type="checkbox" name="y[]" checked="true" /> Uva <br />
-  				<input type="checkbox" name="y[]" /> Manga <br />
-
-  				Textarea:<br />
-  				<textarea rows="10" cols="25"></textarea>
-
-					
-					<input type="submit" value="Buscar" />					
-				</form>
-			</div>
-			<div id="main">
-				<p>
-					<b>The standard Lorem Ipsum passage, used since the 1500s</b><br />
-
-	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-	Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-	"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-				</p>
-			</div>
-		</div>
-		<div id="footer">
-			<h4>Todos os direitos reservados<br /> Unifap 2016</h4>
-		</div>
-	</div>
-</body>
-</html> 
